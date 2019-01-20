@@ -171,12 +171,12 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
                     // update many to many relationship from advertiser model obj
                     final Hotel hotel = getHotelById(hotelId);
                     final Advertiser advertiser = getAdvertiserById(advertiserId);
-                    final Collection<Hotel> hotelsForAdvertiser = advertiser.getHotels();
+                    final List<Hotel> hotelsForAdvertiser = advertiser.getHotels();
                     hotelsForAdvertiser.add(hotel);
                     advertiser.setHotels(hotelsForAdvertiser);
 
                     // update many to many relationship from hotel model obj
-                    final Collection<Advertiser> advertisersForHotel = hotel.getAdvertisers();
+                    final List<Advertiser> advertisersForHotel = hotel.getAdvertisers();
                     advertisersForHotel.add(advertiser);
                     hotel.setAdvertisers(advertisersForHotel);
                 }

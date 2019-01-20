@@ -28,10 +28,11 @@ public class Hotel {
         this.city = city;
         this.rating = rating;
         this.stars = stars;
+        advertisers = new ArrayList<>();
     }
 
-    public void setAdvertisers(final Collection<Advertiser> advertisers) {
-        this.advertisers = new ArrayList<>(advertisers);
+    public void setAdvertisers(final List<Advertiser> advertisers) {
+        this.advertisers = Collections.unmodifiableList(advertisers);
     }
 
     /**
@@ -79,8 +80,8 @@ public class Hotel {
         return stars;
     }
 
-    public Collection<Advertiser> getAdvertisers() {
-        return Collections.unmodifiableCollection(advertisers);
+    public List<Advertiser> getAdvertisers() {
+        return new ArrayList<>(advertisers);
     }
 
     @Override

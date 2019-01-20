@@ -18,10 +18,11 @@ public class Advertiser {
     public Advertiser(int id, String name) {
         this.id = id;
         this.name = name;
+        hotels = new ArrayList<>();
     }
 
-    public void setHotels(final Collection<Hotel> hotels) {
-        this.hotels = new ArrayList<>(hotels);
+    public void setHotels(final List<Hotel> hotels) {
+        this.hotels = Collections.unmodifiableList(hotels);
     }
 
     /**
@@ -37,8 +38,8 @@ public class Advertiser {
         return name;
     }
 
-    public Collection<Hotel> getHotels() {
-        return Collections.unmodifiableCollection(hotels);
+    public List<Hotel> getHotels() {
+        return new ArrayList<>(hotels);
     }
 
     @Override
