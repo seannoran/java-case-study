@@ -1,5 +1,6 @@
 package com.trivago.mp.casestudy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class HotelWithOffers {
 
     public HotelWithOffers(Hotel hotel) {
         this.hotel = hotel;
+        offers = new ArrayList<>();
     }
 
     public Hotel getHotel() {
