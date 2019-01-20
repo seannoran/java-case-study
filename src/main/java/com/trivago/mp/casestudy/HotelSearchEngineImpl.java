@@ -38,6 +38,7 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
         initializeAdvertisers();
         initializeCities();
         initializeHotels();
+        initializeHotelAdvertisers();
     }
 
     @Override
@@ -97,5 +98,42 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
         } catch (final IOException e) {
 
         }
+    }
+
+    /**
+     * Initializes the many-to-many mapping from {@link Hotel} to {@link Advertiser} from the database.
+     * This updates existing hotels with the references to their advertisers.
+     */
+    private void initializeHotelAdvertisers() {
+        try (final BufferedReader br = new BufferedReader(new FileReader("hotel_advertiser.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                final String[] values = line.split(COLUMN_DELIMITER);
+                final int hotelId = Integer.parseInt(values[0]);
+                final int advertiserId = Integer.parseInt(values[1]);
+
+                final Hotel hotelToUpdate = getHotelById(hotelId);
+                final Collection<Advertiser> advertisersForHotel = hotelToUpdate.getAdvertisers();
+                advertisersForHotel.add(getAdvertiserById(advertiserId));
+
+                hotelToUpdate.setAdvertisers(advertisersForHotel);
+            }
+        } catch (final IOException e) {
+
+        }
+    }
+
+    private Hotel getHotelById(final int hotelId) {
+        return hotels.stream()
+                .filter(it -> it.getId() == hotelId)
+                .findAny()
+                .orElseThrow(IllegalStateException::new);
+    }
+
+    private Advertiser getAdvertiserById(final int advertiserId) {
+        return advertisers.stream()
+                .filter(it -> it.getId() == advertiserId)
+                .findAny()
+                .orElseThrow(IllegalStateException::new);
     }
 }
