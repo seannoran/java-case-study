@@ -1,7 +1,7 @@
 package com.trivago.mp.casestudy;
 
 import javax.annotation.Generated;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Stores the id and name of an advertiser. An Advertiser is a company provides offers for hotel stays.
@@ -10,9 +10,18 @@ public class Advertiser {
     private final int id;
     private final String name;
 
+    /**
+     * The many-to-many relationship from advertisers to hotels.
+     */
+    private List<Hotel> hotels;
+
     public Advertiser(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void setHotels(final Collection<Hotel> hotels) {
+        this.hotels = new ArrayList<>(hotels);
     }
 
     /**
@@ -26,6 +35,10 @@ public class Advertiser {
 
     public String getName() {
         return name;
+    }
+
+    public Collection<Hotel> getHotels() {
+        return Collections.unmodifiableCollection(hotels);
     }
 
     @Override
