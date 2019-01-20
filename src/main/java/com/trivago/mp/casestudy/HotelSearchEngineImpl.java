@@ -84,13 +84,18 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
      * Initializes the {@link #advertisers} from the database.
      */
     private void initializeAdvertisers() {
-        try (final BufferedReader br = new BufferedReader(new FileReader("advertisers.csv"))) {
+        boolean firstLineRead = false;
+        try (final BufferedReader br = new BufferedReader(new FileReader("data/advertisers.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                final String[] values = line.split(COLUMN_DELIMITER);
-                final int id = Integer.parseInt(values[0]);
-                final String name = values[1];
-                advertisers.add(new Advertiser(id, name));
+                if (!firstLineRead) {
+                    firstLineRead = true;
+                } else {
+                    final String[] values = line.split(COLUMN_DELIMITER);
+                    final int id = Integer.parseInt(values[0]);
+                    final String name = values[1];
+                    advertisers.add(new Advertiser(id, name));
+                }
             }
         } catch (final IOException e) {
 
@@ -101,13 +106,18 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
      * Initializes the {@link #advertisers} from the database.
      */
     private void initializeCities() {
-        try (final BufferedReader br = new BufferedReader(new FileReader("cities.csv"))) {
+        boolean firstLineRead = false;
+        try (final BufferedReader br = new BufferedReader(new FileReader("data/cities.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                final String[] values = line.split(COLUMN_DELIMITER);
-                final int id = Integer.parseInt(values[0]);
-                final String name = values[1];
-                cities.add(new City(id, name));
+                if (!firstLineRead) {
+                    firstLineRead = true;
+                } else {
+                    final String[] values = line.split(COLUMN_DELIMITER);
+                    final int id = Integer.parseInt(values[0]);
+                    final String name = values[1];
+                    cities.add(new City(id, name));
+                }
             }
         } catch (final IOException e) {
 
@@ -118,19 +128,24 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
      * Initializes the {@link #hotels} from the database.
      */
     private void initializeHotels() {
-        try (final BufferedReader br = new BufferedReader(new FileReader("hotels.csv"))) {
+        boolean firstLineRead = false;
+        try (final BufferedReader br = new BufferedReader(new FileReader("data/hotels.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                final String[] values = line.split(COLUMN_DELIMITER);
-                final int id = Integer.parseInt(values[0]);
-                final String name = values[4];
-                final int cityId = Integer.parseInt(values[1]);
-                final int rating = Integer.parseInt(values[5]);
-                final int stars = Integer.parseInt(values[6]);
+                if (!firstLineRead) {
+                    firstLineRead = true;
+                } else {
+                    final String[] values = line.split(COLUMN_DELIMITER);
+                    final int id = Integer.parseInt(values[0]);
+                    final String name = values[4];
+                    final int cityId = Integer.parseInt(values[1]);
+                    final int rating = Integer.parseInt(values[5]);
+                    final int stars = Integer.parseInt(values[6]);
 
-                final City city = getCityById(cityId);
+                    final City city = getCityById(cityId);
 
-                hotels.add(new Hotel(id, name, city, rating, stars));
+                    hotels.add(new Hotel(id, name, city, rating, stars));
+                }
             }
         } catch (final IOException e) {
 
@@ -142,24 +157,29 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
      * This updates existing hotels with the references to their advertisers.
      */
     private void initializeHotelAdvertisers() {
-        try (final BufferedReader br = new BufferedReader(new FileReader("hotel_advertiser.csv"))) {
+        boolean firstLineRead = false;
+        try (final BufferedReader br = new BufferedReader(new FileReader("data/hotel_advertiser.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                final String[] values = line.split(COLUMN_DELIMITER);
-                final int hotelId = Integer.parseInt(values[0]);
-                final int advertiserId = Integer.parseInt(values[1]);
+                if (!firstLineRead) {
+                    firstLineRead = true;
+                } else {
+                    final String[] values = line.split(COLUMN_DELIMITER);
+                    final int hotelId = Integer.parseInt(values[0]);
+                    final int advertiserId = Integer.parseInt(values[1]);
 
-                // update many to many relationship from advertiser model obj
-                final Hotel hotel = getHotelById(hotelId);
-                final Advertiser advertiser = getAdvertiserById(advertiserId);
-                final Collection<Hotel> hotelsForAdvertiser = advertiser.getHotels();
-                hotelsForAdvertiser.add(hotel);
-                advertiser.setHotels(hotelsForAdvertiser);
+                    // update many to many relationship from advertiser model obj
+                    final Hotel hotel = getHotelById(hotelId);
+                    final Advertiser advertiser = getAdvertiserById(advertiserId);
+                    final Collection<Hotel> hotelsForAdvertiser = advertiser.getHotels();
+                    hotelsForAdvertiser.add(hotel);
+                    advertiser.setHotels(hotelsForAdvertiser);
 
-                // update many to many relationship from hotel model obj
-                final Collection<Advertiser> advertisersForHotel = hotel.getAdvertisers();
-                advertisersForHotel.add(advertiser);
-                hotel.setAdvertisers(advertisersForHotel);
+                    // update many to many relationship from hotel model obj
+                    final Collection<Advertiser> advertisersForHotel = hotel.getAdvertisers();
+                    advertisersForHotel.add(advertiser);
+                    hotel.setAdvertisers(advertisersForHotel);
+                }
             }
         } catch (final IOException e) {
 
