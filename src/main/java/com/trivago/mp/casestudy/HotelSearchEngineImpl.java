@@ -17,7 +17,7 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
     /**
      * The delimiter used to indicate which values in the CSVs belong to which attributes.
      */
-    private static final String COLUMN_DELIMITER = ";";
+    private static final String COLUMN_DELIMITER = ",";
 
     /**
      * The set of unique available advertisers.
