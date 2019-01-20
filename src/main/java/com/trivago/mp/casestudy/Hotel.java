@@ -1,5 +1,8 @@
 package com.trivago.mp.casestudy;
 
+import javax.annotation.Generated;
+import java.util.Objects;
+
 /**
  * Stores all relevant information about a particular hotel.
  */
@@ -55,5 +58,20 @@ public class Hotel {
     @Override
     public String toString() {
         return "Hotel{" + "id=" + id + ", name='" + name + '\'' + ", rating=" + rating + ", stars=" + stars + '}';
+    }
+
+    @Override
+    @Generated("IDEA")
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Hotel that = (Hotel) o;
+        return id == that.id;
+    }
+
+    @Override
+    @Generated("IDEA")
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
