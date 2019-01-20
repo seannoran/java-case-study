@@ -28,10 +28,16 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
      */
     private final Set<City> cities = new HashSet<>();
 
+    /**
+     * The set of unique available hotels.
+     */
+    private final Set<Hotel> hotels = new HashSet<>();
+
     @Override
     public void initialize() {
         initializeAdvertisers();
         initializeCities();
+        initializeHotels();
     }
 
     @Override
@@ -68,6 +74,25 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
                 final int id = Integer.parseInt(values[0]);
                 final String name = values[1];
                 cities.add(new City(id, name));
+            }
+        } catch (final IOException e) {
+
+        }
+    }
+
+    /**
+     * Initializes the {@link #hotels} from the database.
+     */
+    private void initializeHotels() {
+        try (final BufferedReader br = new BufferedReader(new FileReader("hotels.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                final String[] values = line.split(COLUMN_DELIMITER);
+                final int id = Integer.parseInt(values[0]);
+                final String name = values[4];
+                final int rating = Integer.parseInt(values[5]);
+                final int stars = Integer.parseInt(values[5]);
+                hotels.add(new Hotel(id, name, rating, stars));
             }
         } catch (final IOException e) {
 
