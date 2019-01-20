@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * TODO: Implement this class.
@@ -42,9 +43,41 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
     }
 
     @Override
-    public List<HotelWithOffers> performSearch(String cityName, DateRange dateRange, OfferProvider offerProvider) {
-        // TODO: IMPLEMENT ME
-        throw new UnsupportedOperationException();
+    public List<HotelWithOffers> performSearch(final String cityName,
+                                               final DateRange dateRange,
+                                               final OfferProvider offerProvider) {
+
+        final List<HotelWithOffers> offers = new ArrayList<>();
+
+        // the list of hotels filtered by city, grouped by advertiser
+        advertisers.forEach(advertiser -> {
+            final List<Integer> hotelIdsInCity = getHotelIds(advertiser, cityName);
+            offerProvider.getOffersFromAdvertiser(advertiser, hotelIdsInCity, dateRange)
+                    .forEach((hotelId, offer) -> {
+                        final Hotel hotel = getHotelById(hotelId);
+
+                        //get existing or construct new hotel offer
+                        final HotelWithOffers hotelWithOffers = offers.stream()
+                                .filter(it -> Objects.equals(it.getHotel(), hotel))
+                                .findFirst()
+                                .orElse(new HotelWithOffers(hotel));
+                        final List<Offer> hotelOffers = hotelWithOffers.getOffers();
+                        hotelOffers.add(offer);
+                        hotelWithOffers.setOffers(hotelOffers);
+
+                        offers.add(hotelWithOffers); // update offers
+                    });
+                });
+
+        return offers;
+
+    }
+
+    private List<Integer> getHotelIds(final Advertiser advertiser, final String cityName) {
+        return advertiser.getHotels().stream()
+                .filter(hotel -> hotel.getCity().getName().equalsIgnoreCase(cityName))
+                .map(Hotel::getId)
+                .collect(Collectors.toList());
     }
 
     /**
