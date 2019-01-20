@@ -9,6 +9,7 @@ import java.util.*;
 public class Hotel {
     private final int id;
     private final String name;
+    private final City city;
     private final int rating;
     private final int stars;
 
@@ -17,9 +18,14 @@ public class Hotel {
      */
     private List<Advertiser> advertisers;
 
-    public Hotel(int id, String name, int rating, int stars) {
+    public Hotel(final int id,
+                 final String name,
+                 final City city,
+                 final int rating,
+                 final int stars) {
         this.id = id;
         this.name = name;
+        this.city = city;
         this.rating = rating;
         this.stars = stars;
     }
@@ -47,6 +53,15 @@ public class Hotel {
     }
 
     /**
+     * The city in which the hotel is found.
+     *
+     * @return A reference to the hotel's city.
+     */
+    public City getCity() {
+        return city;
+    }
+
+    /**
      * The ratings given by user feedback, between 0-100
      *
      * @return
@@ -70,7 +85,7 @@ public class Hotel {
 
     @Override
     public String toString() {
-        return "Hotel{" + "id=" + id + ", name='" + name + '\'' + ", rating=" + rating + ", stars=" + stars + '}';
+        return "Hotel{" + "id=" + id + ", name='" + name + '\'' + ", city=" + city + ", rating=" + rating + ", stars=" + stars + '}';
     }
 
     @Override

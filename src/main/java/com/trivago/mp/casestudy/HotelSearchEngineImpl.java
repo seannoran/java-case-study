@@ -91,9 +91,13 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
                 final String[] values = line.split(COLUMN_DELIMITER);
                 final int id = Integer.parseInt(values[0]);
                 final String name = values[4];
+                final int cityId = Integer.parseInt(values[1]);
                 final int rating = Integer.parseInt(values[5]);
                 final int stars = Integer.parseInt(values[6]);
-                hotels.add(new Hotel(id, name, rating, stars));
+
+                final City city = getCityById(cityId);
+
+                hotels.add(new Hotel(id, name, city, rating, stars));
             }
         } catch (final IOException e) {
 
@@ -133,6 +137,13 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
     private Advertiser getAdvertiserById(final int advertiserId) {
         return advertisers.stream()
                 .filter(it -> it.getId() == advertiserId)
+                .findAny()
+                .orElseThrow(IllegalStateException::new);
+    }
+
+    private City getCityById(final int cityId) {
+        return cities.stream()
+                .filter(it -> it.getId() == cityId)
                 .findAny()
                 .orElseThrow(IllegalStateException::new);
     }
