@@ -1,7 +1,7 @@
 package com.trivago.mp.casestudy;
 
 import javax.annotation.Generated;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Stores all relevant information about a particular hotel.
@@ -12,11 +12,20 @@ public class Hotel {
     private final int rating;
     private final int stars;
 
+    /**
+     * The many-to-many relationship from hotels to advertisers.
+     */
+    private List<Advertiser> advertisers;
+
     public Hotel(int id, String name, int rating, int stars) {
         this.id = id;
         this.name = name;
         this.rating = rating;
         this.stars = stars;
+    }
+
+    public void setAdvertisers(final Collection<Advertiser> advertisers) {
+        this.advertisers = new ArrayList<>(advertisers);
     }
 
     /**
@@ -53,6 +62,10 @@ public class Hotel {
      */
     public int getStars() {
         return stars;
+    }
+
+    public Collection<Advertiser> getAdvertisers() {
+        return Collections.unmodifiableCollection(advertisers);
     }
 
     @Override
