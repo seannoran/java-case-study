@@ -92,7 +92,7 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
                 final int id = Integer.parseInt(values[0]);
                 final String name = values[4];
                 final int rating = Integer.parseInt(values[5]);
-                final int stars = Integer.parseInt(values[5]);
+                final int stars = Integer.parseInt(values[6]);
                 hotels.add(new Hotel(id, name, rating, stars));
             }
         } catch (final IOException e) {
