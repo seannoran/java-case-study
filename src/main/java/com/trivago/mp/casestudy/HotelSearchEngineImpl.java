@@ -165,12 +165,12 @@ public class HotelSearchEngineImpl implements HotelSearchEngine {
                     firstLineRead = true;
                 } else {
                     final String[] values = line.split(COLUMN_DELIMITER);
-                    final int hotelId = Integer.parseInt(values[0]);
-                    final int advertiserId = Integer.parseInt(values[1]);
+                    final int advertiserId = Integer.parseInt(values[0]);
+                    final int hotelId = Integer.parseInt(values[1]);
 
                     // update many to many relationship from advertiser model obj
                     final Hotel hotel = getHotelById(hotelId);
-                    final Advertiser advertiser = getAdvertiserById(advertiserId);
+                    final Advertiser advertiser  = getAdvertiserById(advertiserId);
                     final List<Hotel> hotelsForAdvertiser = advertiser.getHotels();
                     hotelsForAdvertiser.add(hotel);
                     advertiser.setHotels(hotelsForAdvertiser);
